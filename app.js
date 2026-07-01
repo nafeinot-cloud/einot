@@ -27,10 +27,10 @@ let state = {
     activeFilter: 'all', // 'all', sibling name, or 'פנוי'
     activeView: 'list', // 'list' or 'calendar'
     calendarDate: new Date(), // Currently viewed month in calendar
-    firebaseEnabled: false,
+    firebaseEnabled: true,
     firebaseConfig: {
-        projectId: '',
-        databaseUrl: '',
+        projectId: 'einot-52365',
+        databaseUrl: 'https://einot-52365-default-rtdb.firebaseio.com/',
         apiKey: '',
         sharedPass: ''
     }
@@ -41,7 +41,6 @@ let fbDatabaseRef = null;
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', () => {
-    loadSettings();
     initFirebaseIfEnabled();
     setupEventListeners();
     
@@ -64,22 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
    Data & Sync Management
    ========================================================================== */
 
-function loadSettings() {
-    const config = localStorage.getItem('mom_duty_fb_config');
-    if (config) {
-        try {
-            state.firebaseConfig = JSON.parse(config);
-            state.firebaseEnabled = localStorage.getItem('mom_duty_fb_enabled') === 'true';
-        } catch (e) {
-            console.error('Error loading settings', e);
-        }
-    }
-}
-
-function saveSettings() {
-    localStorage.setItem('mom_duty_fb_config', JSON.stringify(state.firebaseConfig));
-    localStorage.setItem('mom_duty_fb_enabled', state.firebaseEnabled.toString());
-}
+// Settings loaded dynamically are disabled in favor of hardcoded settings
 
 function initFirebaseIfEnabled() {
     if (!state.firebaseEnabled || !state.firebaseConfig.databaseUrl || !state.firebaseConfig.projectId) {
@@ -664,9 +648,6 @@ function setupEventListeners() {
     // Shabbat Generator Trigger
     document.getElementById('generateShabbatotBtn').onclick = () => openModal('generatorModal');
     
-    // Settings Button
-    document.getElementById('settingsBtn').onclick = () => openSettingsModal();
-    
     // Theme toggle
     document.getElementById('themeToggleBtn').onclick = toggleTheme;
     
@@ -688,17 +669,9 @@ function setupEventListeners() {
     document.getElementById('addEventForm').onsubmit = handleAddEventSubmit;
     document.getElementById('editEventForm').onsubmit = handleEditEventSubmit;
     document.getElementById('generatorForm').onsubmit = handleGeneratorSubmit;
-    document.getElementById('firebaseConfigForm').onsubmit = handleFirebaseConfigSubmit;
     
     // Delete Event Button
     document.getElementById('deleteEventBtn').onclick = handleDeleteEvent;
-    
-    // Reset Button
-    document.getElementById('resetAppBtn').onclick = handleResetApp;
-    
-    // Export / Import
-    document.getElementById('exportDataBtn').onclick = handleExportData;
-    document.getElementById('importDataFile').onchange = handleImportData;
     
     // Calendar Month navigation
     document.getElementById('prevMonthBtn').onclick = () => {
@@ -751,16 +724,7 @@ function setupEventListeners() {
         editEventTitleGroup.style.display = type === 'חג' ? 'flex' : 'none';
     };
     
-    // Firebase Toggle Reveal Trigger
-    const firebaseCheckbox = document.getElementById('enableFirebase');
-    const firebaseConfigFields = document.getElementById('firebaseConfigFields');
-    firebaseCheckbox.onchange = () => {
-        if (firebaseCheckbox.checked) {
-            firebaseConfigFields.classList.add('open');
-        } else {
-            firebaseConfigFields.classList.remove('open');
-        }
-    };
+    // Firebase toggle removed since config is hardcoded
 }
 
 function switchView(viewName) {
@@ -997,6 +961,14 @@ function handleGeneratorSubmit(e) {
     const monthsAhead = parseInt(document.getElementById('generateMonths').value);
     const startingSiblingOption = document.getElementById('startingAssignee').value;
     
+    // Read custom rotation array from inputs
+    const rotation = [
+        document.getElementById('rotSlot0').value,
+        document.getElementById('rotSlot1').value,
+        document.getElementById('rotSlot2').value,
+        document.getElementById('rotSlot3').value
+    ];
+    
     // 1. Calculate Shabbat dates
     const shabbatDates = [];
     const today = new Date();
@@ -1015,24 +987,33 @@ function handleGeneratorSubmit(e) {
     }
     
     // 2. Identify the starting rotation pointer
-    let lastAssignedShabbat = null;
     let nextIndex = 0;
     
     if (startingSiblingOption === 'next_in_turn') {
-        // Find the absolute latest shabbat in the DB
+        // Find the absolute latest shabbat in the DB that matches one of our rotation members
         const shabbatot = Object.values(state.events)
-            .filter(e => e.type === 'שבת' && SHABBAT_ROTATION.includes(e.assignedTo))
+            .filter(e => e.type === 'שבת' && rotation.includes(e.assignedTo))
             .sort((a, b) => b.date.localeCompare(a.date)); // descending
             
         if (shabbatot.length > 0) {
-            lastAssignedShabbat = shabbatot[0].assignedTo;
-            const lastIdx = SHABBAT_ROTATION.indexOf(lastAssignedShabbat);
-            nextIndex = (lastIdx + 1) % SHABBAT_ROTATION.length;
+            const lastAssignedShabbat = shabbatot[0].assignedTo;
+            const lastIdx = rotation.lastIndexOf(lastAssignedShabbat); // Use lastIndexOf to find the position
+            nextIndex = (lastIdx + 1) % rotation.length;
         } else {
-            nextIndex = 0; // Default to Naftali
+            nextIndex = 0; // Default to slot 1
         }
+    } else if (startingSiblingOption === 'slot0') {
+        nextIndex = 0;
+    } else if (startingSiblingOption === 'slot1') {
+        nextIndex = 1;
+    } else if (startingSiblingOption === 'slot2') {
+        nextIndex = 2;
+    } else if (startingSiblingOption === 'slot3') {
+        nextIndex = 3;
     } else {
-        nextIndex = SHABBAT_ROTATION.indexOf(startingSiblingOption);
+        // Fallback for old select options
+        const idx = rotation.indexOf(startingSiblingOption);
+        nextIndex = idx !== -1 ? idx : 0;
     }
     
     // 3. Generate and assign
@@ -1042,7 +1023,7 @@ function handleGeneratorSubmit(e) {
         const exists = Object.values(state.events).some(e => e.date === shabbatDate && e.type === 'שבת');
         if (exists) return;
         
-        const assignee = SHABBAT_ROTATION[nextIndex];
+        const assignee = rotation[nextIndex];
         const eventId = `shabbat-${Date.now()}-${generatedCount}`;
         const newShabbat = {
             id: eventId,
@@ -1057,7 +1038,7 @@ function handleGeneratorSubmit(e) {
         generatedCount++;
         
         // Move rotation forward
-        nextIndex = (nextIndex + 1) % SHABBAT_ROTATION.length;
+        nextIndex = (nextIndex + 1) % rotation.length;
     });
     
     showToast(`נוצרו ושובצו ${generatedCount} שבתות חדשות!`, 'success');

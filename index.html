@@ -34,9 +34,6 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <button id="settingsBtn" class="icon-btn" title="הגדרות וסנכרון">
-                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                    </button>
                     <button id="themeToggleBtn" class="icon-btn" title="החלף ערכת נושא">
                         <svg class="sun-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                         <svg class="moon-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
@@ -297,16 +294,8 @@
                     <button class="close-modal-btn">&times;</button>
                 </div>
                 <div class="modal-body">
-                    <p class="desc-text">המחולל יוצר את כל השבתות קדימה לתקופה שתיבחר, ומשבץ אותן אוטומטית לפי סבב האחים הקבוע:</p>
-                    <div class="rotation-preview">
-                        <strong>סדר הסבב:</strong>
-                        <span class="rotation-step">נפתלי</span> ➔ 
-                        <span class="rotation-step">דינה</span> ➔ 
-                        <span class="rotation-step">צורית</span> ➔ 
-                        <span class="rotation-step">מאיר</span>
-                    </div>
-
-
+                    <p class="desc-text">המחולל יוצר את כל השבתות קדימה לתקופה שתיבחר, ומשבץ אותן אוטומטית לפי סבב האחים שתקבעו:</p>
+                    
                     <form id="generatorForm" class="modal-form">
                         <div class="form-group">
                             <label for="generateMonths">טווח זמן ליצירה</label>
@@ -319,13 +308,59 @@
                         </div>
 
                         <div class="form-group">
+                            <label>סדר סבב האחים לתורנות שבת:</label>
+                            <div class="custom-rotation-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 6px;">
+                                <div>
+                                    <label style="font-size: 11px; display: block; margin-bottom: 4px; color: var(--text-muted); text-align: center;">תורן 1</label>
+                                    <select id="rotSlot0" style="padding: 6px; font-size: 13px; width: 100%; border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--border-light);">
+                                        <option value="נפתלי" selected>נפתלי</option>
+                                        <option value="דינה">דינה</option>
+                                        <option value="צורית">צורית</option>
+                                        <option value="מאיר">מאיר</option>
+                                        <option value="אבי">אבי</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-size: 11px; display: block; margin-bottom: 4px; color: var(--text-muted); text-align: center;">תורן 2</label>
+                                    <select id="rotSlot1" style="padding: 6px; font-size: 13px; width: 100%; border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--border-light);">
+                                        <option value="נפתלי">נפתלי</option>
+                                        <option value="דינה" selected>דינה</option>
+                                        <option value="צורית">צורית</option>
+                                        <option value="מאיר">מאיר</option>
+                                        <option value="אבי">אבי</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-size: 11px; display: block; margin-bottom: 4px; color: var(--text-muted); text-align: center;">תורן 3</label>
+                                    <select id="rotSlot2" style="padding: 6px; font-size: 13px; width: 100%; border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--border-light);">
+                                        <option value="נפתלי">נפתלי</option>
+                                        <option value="דינה">דינה</option>
+                                        <option value="צורית" selected>צורית</option>
+                                        <option value="מאיר">מאיר</option>
+                                        <option value="אבי">אבי</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label style="font-size: 11px; display: block; margin-bottom: 4px; color: var(--text-muted); text-align: center;">תורן 4</label>
+                                    <select id="rotSlot3" style="padding: 6px; font-size: 13px; width: 100%; border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-primary); border: 1px solid var(--border-light);">
+                                        <option value="נפתלי">נפתלי</option>
+                                        <option value="דינה">דינה</option>
+                                        <option value="צורית">צורית</option>
+                                        <option value="מאיר" selected>מאיר</option>
+                                        <option value="אבי">אבי</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="startingAssignee">ממי להתחיל את הסבב בשבת הפנויה הראשונה?</label>
                             <select id="startingAssignee">
                                 <option value="next_in_turn">חשב אוטומטית (לפי המשובץ בשבת האחרונה)</option>
-                                <option value="נפתלי">נפתלי</option>
-                                <option value="דינה">דינה</option>
-                                <option value="צורית">צורית</option>
-                                <option value="מאיר">מאיר</option>
+                                <option value="slot0">תורן 1 (ראשון בסבב הנוכחי)</option>
+                                <option value="slot1">תורן 2</option>
+                                <option value="slot2">תורן 3</option>
+                                <option value="slot3">תורן 4</option>
                             </select>
                         </div>
 
@@ -338,77 +373,7 @@
             </div>
         </div>
 
-        <!-- MODAL: Settings & Sync -->
-        <div id="settingsModal" class="modal-overlay">
-            <div class="modal-container">
-                <div class="modal-header">
-                    <h2>הגדרות וסנכרון מידע</h2>
-                    <button class="close-modal-btn">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <!-- Firebase configuration section -->
-                    <div class="settings-section">
-                        <h3>סנכרון ענן (Firebase Realtime Database)</h3>
-                        <p class="desc-text">כדי שכל האחים יוכלו לראות ולערוך את אותם הנתונים בו-זמנית, ניתן לחבר מסד נתונים חינמי של Firebase:</p>
-                        
-                        <form id="firebaseConfigForm" class="settings-form">
-                            <div class="checkbox-wrapper toggle-wrapper">
-                                <input type="checkbox" id="enableFirebase">
-                                <label for="enableFirebase"><strong>אפשר סנכרון ענן (מצב משותף)</strong></label>
-                            </div>
-                            
-                            <div id="firebaseConfigFields" class="reveal-content-block">
-                                <div class="form-group">
-                                    <label for="fbProjectId">Project ID *</label>
-                                    <input type="text" id="fbProjectId" placeholder="למשל: mom-duty-app-1234">
-                                </div>
-                                <div class="form-group">
-                                    <label for="fbDatabaseUrl">Database URL *</label>
-                                    <input type="url" id="fbDatabaseUrl" placeholder="https://mom-duty-app-default-rtdb.firebaseio.com">
-                                </div>
-                                <div class="form-group">
-                                    <label for="fbApiKey">API Key (אופציונלי)</label>
-                                    <input type="password" id="fbApiKey" placeholder="AIzaSy...">
-                                </div>
-                                <div class="form-group">
-                                    <label for="fbSharedPass">קוד גישה משפחתי (מונע שינויים זרים)</label>
-                                    <input type="text" id="fbSharedPass" placeholder="למשל שם המשפחה">
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-full">שמור והתחבר לענן</button>
-                            </div>
-                        </form>
-                    </div>
 
-                    <hr class="settings-divider">
-
-                    <!-- Local Backup Section -->
-                    <div class="settings-section">
-                        <h3>גיבוי ושחזור קבצים</h3>
-                        <p class="desc-text">ייצוא או ייבוא של כל נתוני התורנות לקובץ מקומי לצורך גיבוי או העברה ידנית.</p>
-                        <div class="backup-actions">
-                            <button id="exportDataBtn" class="btn btn-secondary">
-                                📥 ייצא קובץ גיבוי (JSON)
-                            </button>
-                            <label for="importDataFile" class="btn btn-secondary file-upload-label">
-                                📤 ייבא קובץ גיבוי (JSON)
-                                <input type="file" id="importDataFile" accept=".json" style="display: none;">
-                            </label>
-                        </div>
-                    </div>
-
-                    <hr class="settings-divider">
-
-                    <!-- Reset Data Section -->
-                    <div class="settings-section">
-                        <h3 class="text-danger">אזור מסוכן</h3>
-                        <p class="desc-text">מחיקת כל הנתונים השמורים במכשיר זה (או בענן המחובר).</p>
-                        <button id="resetAppBtn" class="btn btn-danger-outline">
-                            ⚠️ אפס ומחק את כל האירועים
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Toast Notifications Container -->
         <div id="toastContainer" class="toast-container"></div>
