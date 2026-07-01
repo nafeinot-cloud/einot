@@ -1,0 +1,12 @@
+{
+  "name": "mom-duty-scheduler",
+  "version": "1.0.0",
+  "description": "Mobile-first scheduling application for family duty coordination",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx -y http-server -p 3000 -o"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

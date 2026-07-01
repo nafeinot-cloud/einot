@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>תורנות אמא - תיאום וליווי באהבה</title>
+    <!-- Google Fonts for modern Hebrew typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&family=Rubik:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.0.3">
+    <!-- PWA settings -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#130f26">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icon-192.png">
+</head>
+<body class="dark-mode">
+    <div class="app-container">
+        <!-- Background decorative glowing orbs for premium glassmorphic feel -->
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+
+        <!-- Header Section -->
+        <header class="app-header">
+            <div class="header-main">
+                <div class="app-logo">
+                    <span class="logo-emoji">❤️</span>
+                    <div class="logo-text">
+                        <h1>תורנות אמא</h1>
+                        <p class="subtitle">תיאום וליווי באהבה</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="settingsBtn" class="icon-btn" title="הגדרות וסנכרון">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    </button>
+                    <button id="themeToggleBtn" class="icon-btn" title="החלף ערכת נושא">
+                        <svg class="sun-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                        <svg class="moon-icon" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- View Switcher -->
+            <div class="view-switcher-container">
+                <div class="view-switcher">
+                    <button id="listViewBtn" class="switch-btn active">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+                        <span>רשימה</span>
+                    </button>
+                    <button id="calendarViewBtn" class="switch-btn">
+                        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <span>לוח שנה</span>
+                    </button>
+                </div>
+                <button id="generateShabbatotBtn" class="action-btn text-btn">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+                    <span>מחולל שבתות</span>
+                </button>
+            </div>
+
+            <!-- Quick Filter Bar -->
+            <div class="filter-bar">
+                <span class="filter-label">סינון לפי אח:</span>
+                <div class="filter-badges" id="filterBadgesContainer">
+                    <span class="filter-badge active" data-sibling="all">הכל</span>
+                    <span class="filter-badge" data-sibling="נפתלי">נפתלי</span>
+                    <span class="filter-badge" data-sibling="דינה">דינה</span>
+                    <span class="filter-badge" data-sibling="צורית">צורית</span>
+                    <span class="filter-badge" data-sibling="מאיר">מאיר</span>
+                    <span class="filter-badge" data-sibling="אבי">אבי</span>
+                    <span class="filter-badge" data-sibling="פנוי">פנוי</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="app-content">
+            <!-- Syncing indicator -->
+            <div id="syncIndicator" class="sync-indicator hidden">
+                <span class="sync-spinner"></span>
+                <span id="syncText">מסתנכרן...</span>
+            </div>
+
+            <!-- List View Container -->
+            <section id="listView" class="view-panel active">
+                <div class="event-list-header">
+                    <h2>אירועים קרובים</h2>
+                    <span id="eventCountBadge" class="count-badge">0 אירועים</span>
+                </div>
+                <div id="eventList" class="event-list">
+                    <!-- Event cards generated by app.js -->
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📅</div>
+                        <h3>אין אירועים מוזנים במערכת</h3>
+                        <p>לחצו על כפתור ה- "+" למטה כדי להוסיף טיפול, או השתמשו במחולל השבתות המהיר.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Calendar View Container -->
+            <section id="calendarView" class="view-panel">
+                <div class="calendar-header">
+                    <button id="prevMonthBtn" class="icon-btn">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
+                    <h2 id="currentMonthYear">יולי 2026</h2>
+                    <button id="nextMonthBtn" class="icon-btn">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="weekday-header">א'</div>
+                    <div class="weekday-header">ב'</div>
+                    <div class="weekday-header">ג'</div>
+                    <div class="weekday-header">ד'</div>
+                    <div class="weekday-header">ה'</div>
+                    <div class="weekday-header">ו'</div>
+                    <div class="weekday-header font-bold">ש'</div>
+                    <div id="calendarDays" class="calendar-days">
+                        <!-- Calendar day cells generated by app.js -->
+                    </div>
+                </div>
+                <!-- Selected Date Detail Panel for mobile pop-under -->
+                <div id="calendarDayDetails" class="day-details-panel hidden">
+                    <div class="day-details-header">
+                        <h3 id="detailsDateTitle">יום שלישי, 12 ביוני</h3>
+                        <button id="closeDetailsBtn" class="icon-btn-small">&times;</button>
+                    </div>
+                    <div id="detailsEventsContainer" class="details-events-container">
+                        <!-- Events for selected day -->
+                    </div>
+                    <button id="addEventForDateBtn" class="action-btn text-btn-small">
+                        <span>+ הוסף אירוע ליום זה</span>
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Floating Action Button for Add Event -->
+        <button id="fabBtn" class="fab-btn" title="הוסף אירוע חדש">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        </button>
+
+        <!-- MODAL: Add Event -->
+        <div id="addEventModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2>הוספת אירוע חדש</h2>
+                    <button class="close-modal-btn">&times;</button>
+                </div>
+                <form id="addEventForm" class="modal-form">
+                    <div class="form-group">
+                        <label for="eventDate">תאריך *</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="eventType">סוג האירוע *</label>
+                            <select id="eventType" required>
+                                <option value="טיפול" selected>טיפול רפואי</option>
+                                <option value="שבת">שבת</option>
+                                <option value="חג">חג</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="eventTime">שעה</label>
+                            <input type="time" id="eventTime">
+                        </div>
+                    </div>
+
+                    <div id="eventTitleGroup" class="form-group" style="display: none;">
+                        <label for="eventTitle">שם החג *</label>
+                        <input type="text" id="eventTitle" placeholder="למשל: ראש השנה, פסח, שבועות">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventAssignee">מי משובץ?</label>
+                        <select id="eventAssignee">
+                            <option value="פנוי" selected>פנוי - דרוש שיבוץ</option>
+                            <option value="נפתלי">נפתלי</option>
+                            <option value="דינה">דינה</option>
+                            <option value="צורית">צורית</option>
+                            <option value="מאיר">מאיר</option>
+                            <option value="אבי">אבי</option>
+                        </select>
+                    </div>
+
+                    <!-- Recurring options for Treatments -->
+                    <div id="recurrenceSection" class="form-group checkbox-reveal-container">
+                        <div class="checkbox-wrapper">
+                            <input type="checkbox" id="eventRecurring">
+                            <label for="eventRecurring">אירוע מחזורי (למשל טיפולים חוזרים)</label>
+                        </div>
+                        <div id="recurrenceDetails" class="reveal-content">
+                            <div class="form-group-row">
+                                <div class="form-group">
+                                    <label for="recurrenceFrequency">תדירות</label>
+                                    <select id="recurrenceFrequency">
+                                        <option value="weekly" selected>כל שבוע ביום זה</option>
+                                        <option value="biweekly">כל שבועיים ביום זה</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="recurrenceCount">מספר פעמים</label>
+                                    <input type="number" id="recurrenceCount" min="2" max="24" value="4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="eventNotes">הערות</label>
+                        <textarea id="eventNotes" rows="3" placeholder="הערות חשובות, מה להביא, מידע על הרופא וכו'"></textarea>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary cancel-btn">ביטול</button>
+                        <button type="submit" class="btn btn-primary">שמור אירוע</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL: Edit Event -->
+        <div id="editEventModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2>עריכת אירוע</h2>
+                    <button class="close-modal-btn">&times;</button>
+                </div>
+                <form id="editEventForm" class="modal-form">
+                    <input type="hidden" id="editEventId">
+                    
+                    <div class="form-group">
+                        <label for="editEventDate">תאריך *</label>
+                        <input type="date" id="editEventDate" required>
+                    </div>
+
+                    <div class="form-group-row">
+                        <div class="form-group">
+                            <label for="editEventType">סוג האירוע *</label>
+                            <select id="editEventType" required>
+                                <option value="טיפול">טיפול רפואי</option>
+                                <option value="שבת">שבת</option>
+                                <option value="חג">חג</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEventTime">שעה</label>
+                            <input type="time" id="editEventTime">
+                        </div>
+                    </div>
+
+                    <div id="editEventTitleGroup" class="form-group" style="display: none;">
+                        <label for="editEventTitle">שם החג *</label>
+                        <input type="text" id="editEventTitle" placeholder="למשל: ראש השנה, פסח, שבועות">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editEventAssignee">מי משובץ?</label>
+                        <select id="editEventAssignee">
+                            <option value="פנוי">פנוי - דרוש שיבוץ</option>
+                            <option value="נפתלי">נפתלי</option>
+                            <option value="דינה">דינה</option>
+                            <option value="צורית">צורית</option>
+                            <option value="מאיר">מאיר</option>
+                            <option value="אבי">אבי</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editEventNotes">הערות</label>
+                        <textarea id="editEventNotes" rows="3" placeholder="הערות לגבי האירוע..."></textarea>
+                    </div>
+
+                    <div class="modal-actions-spaced">
+                        <button type="button" id="deleteEventBtn" class="btn btn-danger">מחק אירוע</button>
+                        <div class="modal-actions-group">
+                            <button type="button" class="btn btn-secondary cancel-btn">ביטול</button>
+                            <button type="submit" class="btn btn-primary">שמור שינויים</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL: Shabbat Generator -->
+        <div id="generatorModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2>מחולל שבתות אוטומטי</h2>
+                    <button class="close-modal-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p class="desc-text">המחולל יוצר את כל השבתות קדימה לתקופה שתיבחר, ומשבץ אותן אוטומטית לפי סבב האחים הקבוע:</p>
+                    <div class="rotation-preview">
+                        <strong>סדר הסבב:</strong>
+                        <span class="rotation-step">נפתלי</span> ➔ 
+                        <span class="rotation-step">דינה</span> ➔ 
+                        <span class="rotation-step">צורית</span> ➔ 
+                        <span class="rotation-step">מאיר</span>
+                    </div>
+
+
+                    <form id="generatorForm" class="modal-form">
+                        <div class="form-group">
+                            <label for="generateMonths">טווח זמן ליצירה</label>
+                            <select id="generateMonths">
+                                <option value="1">חודש קדימה (כ-4 שבתות)</option>
+                                <option value="2" selected>חודשיים קדימה (כ-8 שבתות)</option>
+                                <option value="3">3 חודשים קדימה (כ-12 שבתות)</option>
+                                <option value="6">חצי שנה קדימה (כ-25 שבתות)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="startingAssignee">ממי להתחיל את הסבב בשבת הפנויה הראשונה?</label>
+                            <select id="startingAssignee">
+                                <option value="next_in_turn">חשב אוטומטית (לפי המשובץ בשבת האחרונה)</option>
+                                <option value="נפתלי">נפתלי</option>
+                                <option value="דינה">דינה</option>
+                                <option value="צורית">צורית</option>
+                                <option value="מאיר">מאיר</option>
+                            </select>
+                        </div>
+
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-secondary cancel-btn">ביטול</button>
+                            <button type="submit" class="btn btn-accent">הפעל מחולל שבתות</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: Settings & Sync -->
+        <div id="settingsModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2>הגדרות וסנכרון מידע</h2>
+                    <button class="close-modal-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <!-- Firebase configuration section -->
+                    <div class="settings-section">
+                        <h3>סנכרון ענן (Firebase Realtime Database)</h3>
+                        <p class="desc-text">כדי שכל האחים יוכלו לראות ולערוך את אותם הנתונים בו-זמנית, ניתן לחבר מסד נתונים חינמי של Firebase:</p>
+                        
+                        <form id="firebaseConfigForm" class="settings-form">
+                            <div class="checkbox-wrapper toggle-wrapper">
+                                <input type="checkbox" id="enableFirebase">
+                                <label for="enableFirebase"><strong>אפשר סנכרון ענן (מצב משותף)</strong></label>
+                            </div>
+                            
+                            <div id="firebaseConfigFields" class="reveal-content-block">
+                                <div class="form-group">
+                                    <label for="fbProjectId">Project ID *</label>
+                                    <input type="text" id="fbProjectId" placeholder="למשל: mom-duty-app-1234">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fbDatabaseUrl">Database URL *</label>
+                                    <input type="url" id="fbDatabaseUrl" placeholder="https://mom-duty-app-default-rtdb.firebaseio.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fbApiKey">API Key (אופציונלי)</label>
+                                    <input type="password" id="fbApiKey" placeholder="AIzaSy...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="fbSharedPass">קוד גישה משפחתי (מונע שינויים זרים)</label>
+                                    <input type="text" id="fbSharedPass" placeholder="למשל שם המשפחה">
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-full">שמור והתחבר לענן</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <hr class="settings-divider">
+
+                    <!-- Local Backup Section -->
+                    <div class="settings-section">
+                        <h3>גיבוי ושחזור קבצים</h3>
+                        <p class="desc-text">ייצוא או ייבוא של כל נתוני התורנות לקובץ מקומי לצורך גיבוי או העברה ידנית.</p>
+                        <div class="backup-actions">
+                            <button id="exportDataBtn" class="btn btn-secondary">
+                                📥 ייצא קובץ גיבוי (JSON)
+                            </button>
+                            <label for="importDataFile" class="btn btn-secondary file-upload-label">
+                                📤 ייבא קובץ גיבוי (JSON)
+                                <input type="file" id="importDataFile" accept=".json" style="display: none;">
+                            </label>
+                        </div>
+                    </div>
+
+                    <hr class="settings-divider">
+
+                    <!-- Reset Data Section -->
+                    <div class="settings-section">
+                        <h3 class="text-danger">אזור מסוכן</h3>
+                        <p class="desc-text">מחיקת כל הנתונים השמורים במכשיר זה (או בענן המחובר).</p>
+                        <button id="resetAppBtn" class="btn btn-danger-outline">
+                            ⚠️ אפס ומחק את כל האירועים
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notifications Container -->
+        <div id="toastContainer" class="toast-container"></div>
+    </div>
+
+    <!-- Firebase SDKs (v9 Compat Mode for simple client script compatibility) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <!-- Application Logic -->
+    <script src="app.js?v=1.0.3"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('Service Worker registered successfully.', reg.scope))
+                    .catch(err => console.log('Service Worker registration failed.', err));
+            });
+        }
+    </script>
+</body>
+</html>
