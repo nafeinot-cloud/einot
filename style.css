@@ -1259,3 +1259,163 @@ body.light-mode .toast {
     from { transform: translateY(20px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
+
+/* Table View Styling */
+.table-scroll-container {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
+    margin-top: 10px;
+}
+
+.duty-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: right;
+    font-size: 13px;
+    color: var(--text-primary);
+    min-width: 500px;
+}
+
+.duty-table th {
+    background: rgba(30, 26, 54, 0.85);
+    color: var(--text-secondary);
+    font-weight: 700;
+    padding: 12px 16px;
+    border-bottom: 2px solid var(--card-border);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+body.light-mode .duty-table th {
+    background: rgba(240, 238, 245, 0.9);
+    border-bottom: 2px solid var(--border-light);
+}
+
+.duty-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--card-border);
+    vertical-align: middle;
+}
+
+body.light-mode .duty-table td {
+    border-bottom: 1px solid var(--border-light);
+}
+
+.duty-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.duty-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+body.light-mode .duty-table tbody tr:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.duty-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.015);
+}
+
+body.light-mode .duty-table tbody tr:nth-child(even) {
+    background: rgba(0, 0, 0, 0.005);
+}
+
+/* Custom stylings inside table cells */
+.table-date-cell {
+    font-weight: 600;
+}
+
+.table-hebrew-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.table-type-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.table-type-badge.badge-shabbat {
+    background: var(--color-shabbat-bg);
+    color: var(--color-shabbat);
+    border: 1px solid var(--color-shabbat-border);
+}
+
+.table-type-badge.badge-holiday {
+    background: var(--color-holiday-bg);
+    color: var(--color-holiday);
+    border: 1px solid var(--color-holiday-border);
+}
+
+.table-type-badge.badge-treatment {
+    background: var(--color-treatment-bg);
+    color: var(--color-treatment);
+    border: 1px solid var(--color-treatment-border);
+}
+
+.table-assignee-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.table-assignee-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.table-assignee-badge.unassigned {
+    background: var(--color-unassigned);
+}
+
+.table-actions-cell {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.table-btn-icon {
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.table-btn-icon:hover {
+    background: var(--card-border);
+    color: var(--text-primary);
+    transform: scale(1.05);
+}
+
+body.light-mode .table-btn-icon {
+    border: 1px solid var(--border-light);
+}
+
+body.light-mode .table-btn-icon:hover {
+    background: var(--border-light);
+}
