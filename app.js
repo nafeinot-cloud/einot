@@ -528,13 +528,13 @@ function renderTable() {
         
         // Actions
         const waButton = isVacant ? `
-            <button class="table-btn-icon" title="בקש התנדבות בוואטסאפ" onclick="shareToWhatsApp('${event.id}')">
+            <button class="table-btn-icon" title="בקש התנדבות בוואטסאפ" onclick="event.stopPropagation(); shareToWhatsApp('${event.id}')">
                 <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.457L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.864.002-2.637-1.03-5.115-2.908-6.995-1.878-1.88-4.357-2.912-6.996-2.914-5.441 0-9.866 4.42-9.87 9.865-.001 1.693.443 3.344 1.285 4.808L1.758 22.25l4.889-1.283zM16.92 14.1c-.266-.134-1.58-.78-1.828-.868-.247-.09-.427-.134-.607.135-.18.267-.697.868-.853 1.047-.158.179-.315.2-.58.067-.266-.134-1.126-.416-2.146-1.326-.793-.708-1.329-1.582-1.486-1.848-.158-.266-.017-.41.117-.542.12-.12.266-.31.4-.467.135-.156.18-.267.27-.446.09-.178.045-.334-.022-.468-.067-.134-.607-1.46-.83-2.003-.218-.524-.46-.453-.607-.46l-.52-.01c-.18 0-.473.067-.72.333-.247.267-.945.923-.945 2.25 0 1.328.966 2.612 1.1 2.79.135.18 1.9 2.9 4.606 4.07.644.278 1.147.444 1.54.568.647.206 1.237.177 1.703.107.519-.078 1.58-.646 1.804-1.24.225-.594.225-1.102.157-1.202-.067-.1-.247-.145-.513-.28z"/></svg>
             </button>
         ` : '';
         
         return `
-            <tr>
+            <tr style="cursor: pointer;" onclick="openEditModal('${event.id}')">
                 <td class="table-date-cell">
                     <div><strong>${dayOfWeek}</strong>, ${dateNumbers}</div>
                     <div class="table-hebrew-date">${hebrewDate}</div>
@@ -560,7 +560,7 @@ function renderTable() {
                 <td>
                     <div class="table-actions-cell">
                         ${waButton}
-                        <button class="table-btn-icon" title="עריכת תורנות" onclick="openEditModal('${event.id}')">
+                        <button class="table-btn-icon" title="עריכת תורנות" onclick="event.stopPropagation(); openEditModal('${event.id}')">
                             <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         </button>
                     </div>
@@ -747,6 +747,10 @@ function setupEventListeners() {
     document.getElementById('calendarViewBtn').onclick = () => switchView('calendar');
     document.getElementById('tableViewBtn').onclick = () => switchView('table');
     
+    // Add Event Header Buttons
+    document.getElementById('addEventListBtn').onclick = () => openAddModal();
+    document.getElementById('addEventTableBtn').onclick = () => openAddModal();
+    
     // Floating Button
     document.getElementById('fabBtn').onclick = () => {
         const detailsPanel = document.getElementById('calendarDayDetails');
@@ -869,6 +873,14 @@ function openAddModal(prefilledDate = null) {
         dateInput.value = prefilledDate;
     } else {
         dateInput.value = new Date().toISOString().split('T')[0];
+    }
+    
+    // Prefill sibling if a specific sibling is active in the filter
+    const assigneeSelect = document.getElementById('eventAssignee');
+    if (state.activeFilter && state.activeFilter !== 'all' && state.activeFilter !== 'פנוי') {
+        assigneeSelect.value = state.activeFilter;
+    } else {
+        assigneeSelect.value = 'פנוי'; // Default
     }
     
     // Hide recurrence details and holiday fields initially
