@@ -101,6 +101,13 @@ function setupFirebaseSync() {
             state.events = {};
         }
         localStorage.setItem('mom_duty_events', JSON.stringify(state.events));
+        showSyncIndicator(false);
+        render();
+    }, (error) => {
+        console.error('Firebase events sync error:', error);
+        showToast('שגיאת חיבור לנתונים בענן. עובד במצב מקומי.', 'error');
+        showSyncIndicator(false);
+        loadLocalEvents();
         render();
     });
 
