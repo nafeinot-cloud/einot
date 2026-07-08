@@ -613,7 +613,7 @@ body.light-mode .card-notes {
     transform: scale(1.02);
 }
 
-.card-edit-btn {
+.card-edit-btn, .card-calendar-btn {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     color: var(--text-secondary);
@@ -625,7 +625,7 @@ body.light-mode .card-notes {
     transition: var(--transition);
 }
 
-.card-edit-btn:hover {
+.card-edit-btn:hover, .card-calendar-btn:hover {
     color: var(--text-primary);
     border-color: var(--text-muted);
 }

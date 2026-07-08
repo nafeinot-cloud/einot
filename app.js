@@ -443,7 +443,8 @@ function renderList() {
                 ${notesHtml}
                 <div class="card-actions">
                     ${waButton}
-                    <button class="card-edit-btn" onclick="openEditModal('${event.id}')">שינוי שיבוץ / עריכה</button>
+                    <button class="card-calendar-btn" onclick="event.stopPropagation(); openCalendarExportModal('${event.id}')">📅 הוסף ליומן</button>
+                    <button class="card-edit-btn" onclick="event.stopPropagation(); openEditModal('${event.id}')">שינוי שיבוץ / עריכה</button>
                 </div>
             </div>
         `;
@@ -560,6 +561,9 @@ function renderTable() {
                 <td>
                     <div class="table-actions-cell">
                         ${waButton}
+                        <button class="table-btn-icon" title="הוסף ליומן האישי" onclick="event.stopPropagation(); openCalendarExportModal('${event.id}')">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        </button>
                         <button class="table-btn-icon" title="עריכת תורנות" onclick="event.stopPropagation(); openEditModal('${event.id}')">
                             <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                         </button>
@@ -722,8 +726,9 @@ function selectCalendarDay(dateStr) {
                     </div>
                     ${(event.notes && event.notes !== displayTitle) ? `<div style="font-size:11px; color:var(--text-secondary); margin-top:4px;">${event.notes}</div>` : ''}
                     <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:6px;">
-                        ${isVacant ? `<button class="whatsapp-share-btn" style="padding:3px 8px; font-size:10px;" onclick="shareToWhatsApp('${event.id}')">שתף</button>` : ''}
-                        <button class="card-edit-btn" style="padding:3px 8px; font-size:10px;" onclick="openEditModal('${event.id}')">ערוך</button>
+                        ${isVacant ? `<button class="whatsapp-share-btn" style="padding:3px 8px; font-size:10px;" onclick="event.stopPropagation(); shareToWhatsApp('${event.id}')">שתף</button>` : ''}
+                        <button class="card-calendar-btn" style="padding:3px 8px; font-size:10px;" onclick="event.stopPropagation(); openCalendarExportModal('${event.id}')">📅 יומן</button>
+                        <button class="card-edit-btn" style="padding:3px 8px; font-size:10px;" onclick="event.stopPropagation(); openEditModal('${event.id}')">ערוך</button>
                     </div>
                 </div>
             `;
@@ -761,6 +766,9 @@ function setupEventListeners() {
     
     // Shabbat Generator Trigger
     document.getElementById('generateShabbatotBtn').onclick = () => openModal('generatorModal');
+    
+    // Calendar Export Handlers
+    initCalendarExportHandlers();
     
     // Theme toggle
     document.getElementById('themeToggleBtn').onclick = toggleTheme;
@@ -1329,5 +1337,138 @@ function showSyncIndicator(show, text = 'מסתנכרן...') {
         indicator.classList.remove('hidden');
     } else {
         indicator.classList.add('hidden');
+    }
+}
+
+/* ==========================================================================
+   Calendar Event Export Functionality
+   ========================================================================== */
+
+let currentExportEventId = null;
+
+function openCalendarExportModal(eventId) {
+    currentExportEventId = eventId;
+    openModal('calendarExportModal');
+}
+
+function initCalendarExportHandlers() {
+    document.getElementById('exportGoogleBtn').onclick = () => {
+        if (!currentExportEventId) return;
+        exportToGoogleCalendar(currentExportEventId);
+        closeModal('calendarExportModal');
+    };
+    
+    document.getElementById('exportIcsBtn').onclick = () => {
+        if (!currentExportEventId) return;
+        exportToIcsCalendar(currentExportEventId);
+        closeModal('calendarExportModal');
+    };
+}
+
+function getCalendarEventDetails(eventId) {
+    const merged = getMergedEvents();
+    const event = merged[eventId];
+    if (!event) return null;
+    
+    let displayTitle = event.title || (event.type === 'חג' ? event.notes : event.type);
+    if (event.type === 'שבת') {
+        const parasha = state.parashot[event.date];
+        if (parasha) {
+            displayTitle = `שבת - ${parasha}`;
+        }
+    }
+    
+    // Add assignee name to calendar title
+    const assigneeStr = event.assignedTo === 'פנוי' ? 'דרוש שיבוץ' : event.assignedTo;
+    const title = `תורנות אמא: ${displayTitle} (${assigneeStr})`;
+    
+    // Build description
+    const notesStr = event.notes ? `הערות: ${event.notes}` : '';
+    const timeStr = event.time ? `שעה: ${event.time}` : '';
+    const details = `תורנות אמא מלווה.\n${displayTitle}\nמשובץ: ${assigneeStr}\n${timeStr}\n${notesStr}\nנוצר באמצעות אפליקציית התורנות.`.trim();
+    
+    const dateStr = event.date; // "YYYY-MM-DD"
+    const timeVal = event.time; // "HH:MM"
+    
+    let isAllDay = !timeVal;
+    let startIso, endIso;
+    
+    if (isAllDay) {
+        // All-day: YYYYMMDD
+        const start = dateStr.replace(/-/g, '');
+        
+        // Calculate next day
+        const d = new Date(dateStr + 'T00:00:00');
+        d.setDate(d.getDate() + 1);
+        const nextYear = d.getFullYear();
+        const nextMonth = String(d.getMonth() + 1).padStart(2, '0');
+        const nextDay = String(d.getDate()).padStart(2, '0');
+        const end = `${nextYear}${nextMonth}${nextDay}`;
+        
+        startIso = start;
+        endIso = end;
+    } else {
+        // Timed: YYYYMMDDTHHMMSS (Local Time representation for calendar imports)
+        const [hours, minutes] = timeVal.split(':');
+        const start = dateStr.replace(/-/g, '') + 'T' + hours.padStart(2, '0') + minutes.padStart(2, '0') + '00';
+        
+        // Assume 2 hours duration for treatment
+        const d = new Date(dateStr + 'T' + timeVal + ':00');
+        d.setHours(d.getHours() + 2);
+        const endYear = d.getFullYear();
+        const endMonth = String(d.getMonth() + 1).padStart(2, '0');
+        const endDay = String(d.getDate()).padStart(2, '0');
+        const endHours = String(d.getHours()).padStart(2, '0');
+        const endMinutes = String(d.getMinutes()).padStart(2, '0');
+        const end = `${endYear}${endMonth}${endDay}T${endHours}${endMinutes}00`;
+        
+        startIso = start;
+        endIso = end;
+    }
+    
+    return { title, details, startIso, endIso, isAllDay, event };
+}
+
+function exportToGoogleCalendar(eventId) {
+    const detailsObj = getCalendarEventDetails(eventId);
+    if (!detailsObj) return;
+    
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(detailsObj.title)}&dates=${detailsObj.startIso}/${detailsObj.endIso}&details=${encodeURIComponent(detailsObj.details)}&sf=true&output=xml`;
+    window.open(url, '_blank');
+}
+
+function exportToIcsCalendar(eventId) {
+    const detailsObj = getCalendarEventDetails(eventId);
+    if (!detailsObj) return;
+    
+    const icsContent = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Mom Duty App//NONSGML v1.0//EN',
+        'CALSCALE:GREGORIAN',
+        'BEGIN:VEVENT',
+        `UID:${detailsObj.event.id}@mom-duty-app`,
+        `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z'}`,
+        detailsObj.isAllDay ? `DTSTART;VALUE=DATE:${detailsObj.startIso}` : `DTSTART:${detailsObj.startIso}`,
+        detailsObj.isAllDay ? `DTEND;VALUE=DATE:${detailsObj.endIso}` : `DTEND:${detailsObj.endIso}`,
+        `SUMMARY:${detailsObj.title}`,
+        `DESCRIPTION:${detailsObj.details}`,
+        'END:VEVENT',
+        'END:VCALENDAR'
+    ].join('\r\n');
+    
+    try {
+        const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `mom_duty_${detailsObj.event.date}_${detailsObj.event.type}.ics`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showToast('קובץ יומן הורד בהצלחה. פתחו אותו כדי להוסיף ליומן!', 'success');
+    } catch (e) {
+        console.error(e);
+        showToast('שגיאה ביצירת קובץ היומן', 'error');
     }
 }
